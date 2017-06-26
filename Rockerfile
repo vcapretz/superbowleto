@@ -1,0 +1,7 @@
+FROM node:6.10-alpine
+
+MOUNT {{ .RepositoryPath }}:/app
+WORKDIR /app
+RUN npm install
+RUN npm run build-production
+RUN npm prune --production

@@ -1,0 +1,31 @@
+---
+
+scm:
+  type: git
+  repository: git@github.com:pagarme/superbowleto.git
+
+build:
+  type: rocker
+
+deploy:
+  type: lambda
+  region: us-east-1
+  project_name: superbowleto
+  s3_bucket: superbowleto-deploy-xc18
+  package:
+    - dist
+    - node_modules
+  functions:
+    - create-boleto
+    - index-boleto
+    - show-boleto
+    - update-boleto
+    - register-boleto
+    - process-boletos-to-register
+    - migrate-database
+
+environments:
+  sandbox:
+    name: sandbox
+  live:
+    name: live
