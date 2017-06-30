@@ -1,11 +1,15 @@
 import * as Umzug from 'umzug'
 import * as Promise from 'bluebird'
+import { resolve } from 'path'
 
 import { getDatabase } from '../../database'
 
+console.log(process.cwd())
+
 const getMigrationsPath = () => {
   if (process.env.NODE_ENV === 'production') {
-    return './dist/migrations'
+    return resolve(__dirname, 'migrations')
+
   }
 
   return './build/database/migrations'
@@ -14,7 +18,7 @@ const getMigrationsPath = () => {
 export const migrate = (event, context, callback) => {
   console.log('MIGRATION STARTED XXX19')
 
-  return Promise
+  return Promise.resolve()
     .timeout(10000)
     .then(() => {
       console.log("dentro do then")
