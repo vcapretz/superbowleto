@@ -17,7 +17,10 @@ export const migrate = (event, context, callback) => {
   return Promise
     .timeout(10000)
     .then(() => {
+      console.log("dentro do then")
       return getDatabase().then((database) => {
+        console.log("start getDatabase")
+
         const umzug = new Umzug({
           storage: 'sequelize',
           storageOptions: {
@@ -33,9 +36,14 @@ export const migrate = (event, context, callback) => {
           }
         })
 
+        console.log("before umzug.up")
+
         return umzug.up()
         .then(() => callback(null))
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      callback(err)
+    })
 }
