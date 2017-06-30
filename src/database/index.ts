@@ -15,14 +15,20 @@ const defaults = {
 let database = null
 
 export function getDatabase () {
+  console.log("dentro do getDatabase", database)
   if (database) {
     return Promise.resolve(database)
   }
 
   return getDatabasePassword().then((password) => {
+    console.log("after getDatabasePassword", password)
+    console.log("before new Sequelize", Object.assign({}, defaults, config, { password }))
+
     database = new Sequelize(Object.assign({}, defaults, config, {
       password
     }))
+
+    console.log("after new Sequelize")
 
     const createInstance = model => ({
       model,
@@ -39,7 +45,13 @@ export function getDatabase () {
       .map(createInstance)
       .map(associateModels)
 
+
+    console.log("before getDatabase return", database)
+
     return database
+  })
+  .catch(err => {
+    console.log("Erro no getDatabasePassword()", err)
   })
 }
 
