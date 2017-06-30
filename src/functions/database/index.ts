@@ -11,6 +11,8 @@ const getMigrationsPath = () => {
 }
 
 export const migrate = (event, context, callback) => {
+  console.log('MIGRATION STARTED XXX19')
+
   getDatabase().then((database) => {
     const umzug = new Umzug({
       storage: 'sequelize',

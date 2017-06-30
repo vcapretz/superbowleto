@@ -6,6 +6,7 @@ scm:
 
 build:
   type: rocker
+  build_directory: /Users/grvcoelho/Hyperspace/pagarme/superbowleto
 
 deploy:
   type: lambda
