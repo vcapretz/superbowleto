@@ -8,7 +8,6 @@ resource "aws_lambda_function" "lambda" {
   timeout = "${var.timeout}"
 
   filename = "${path.module}/lambda.zip"
-  source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
   source_code_hash = "${base64sha256(file("${path.module}/lambda.zip"))}"
 
   tags {
