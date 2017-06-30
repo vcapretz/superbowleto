@@ -1,6 +1,5 @@
 ### Project ###
 build
-dist
 .serverless
 .webpack.test.import
 
