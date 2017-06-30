@@ -29,8 +29,8 @@ export const migrate = (event, context, callback) => {
       }
     })
 
-    umzug.up()
+    return umzug.up()
       .then(() => callback(null))
-      .catch(err => callback(err))
   })
+  .catch(err => console.log(err))
 }
