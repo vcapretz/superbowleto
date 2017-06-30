@@ -4,7 +4,7 @@ const Credstash = require('nodecredstash')
 
 export function getDatabasePassword () {
   const credstash = Credstash({
-    table: 'database',
+    table: 'credential-store',
     awsOpts: { region: 'us-east-1' }
   })
 
