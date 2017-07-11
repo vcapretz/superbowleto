@@ -47,3 +47,9 @@ export function getModel (modelName) {
   return getDatabase()
     .then(returnedDatabase => returnedDatabase.models[modelName])
 }
+
+export function closeDatabaseConnection () {
+  return getDatabase()
+    .then(database => database.close())
+    .then(() => database = null)
+}

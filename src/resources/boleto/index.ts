@@ -10,6 +10,7 @@ import { makeFromLogger } from '../../lib/logger'
 import { BoletosToRegisterQueue, BoletosToRegisterQueueUrl } from './queues'
 import lambda from './lambda'
 import { defaultCuidValue, responseObjectBuilder } from '../../lib/database/schema'
+import { closeDatabaseConnection } from '../../database'
 import { buildModelResponse } from './model'
 
 const makeLogger = makeFromLogger('boleto/index')
@@ -76,6 +77,7 @@ export const create = (event, context, callback) => {
       logger.error({ status: 'failed', metadata: { err } })
       return handleError(err)
     })
+    .tap(closeDatabaseConnection)
     .then(response => callback(null, response))
 }
 
