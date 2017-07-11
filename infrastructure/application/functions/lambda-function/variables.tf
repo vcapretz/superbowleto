@@ -26,7 +26,7 @@ variable "runtime" {
 
 variable "timeout" {
   type = "string"
-  default = "10"
+  default = "30"
 }
 
 variable "environment_variables" {
