@@ -28,8 +28,8 @@ resource "aws_api_gateway_deployment" "api_deployment" {
 }
 
 resource "aws_api_gateway_usage_plan" "pagarme" {
-  name = "pagarme"
-  description = "Usage plan meant to be used by Pagar.me Services"
+  name = "${var.stage}-pagarme"
+  description = "Usage plan meant to be used by Pagar.me Services on ${var.stage} environment"
 
   api_stages {
     api_id = "${aws_api_gateway_rest_api.rest_api.id}"
@@ -38,8 +38,8 @@ resource "aws_api_gateway_usage_plan" "pagarme" {
 }
 
 resource "aws_api_gateway_api_key" "pagarme" {
-  name = "pagarme"
-  description = "API key meant to be used by Pagar.me Services"
+  name = "${var.stage}-pagarme"
+  description = "API key meant to be used by Pagar.me Services on ${var.stage} environment"
 }
 
 resource "aws_api_gateway_usage_plan_key" "pagarme" {
