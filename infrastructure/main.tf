@@ -11,6 +11,8 @@ terraform {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
 module "management" {
   source = "./management"
 }
@@ -37,13 +39,15 @@ module "sandbox" {
   source = "./application"
   stage = "sandbox"
   region = "${var.region}"
-  account_id = "${var.account_id}"
+  account_id = "${data.aws_caller_identity.current.account_id}"
+
+  vpc_id = "${module.network.vpc_id}"
+  dns_base = "xxx"
+  dns_zone_id = "xxx"
 
   lambda_execution_role_name = "${module.sandbox_access_control.lambda_execution_role_name}"
   lambda_execution_role_arn = "${module.sandbox_access_control.lambda_execution_role_arn}"
-  lambda_security_group_ids = "${module.network.lambda_security_group_ids}"
   lambda_subnet_ids = "${module.network.lambda_subnet_ids}"
 
-  database_subnet_group_name = "${module.network.database_subnet_group_name}"
-  database_security_group_ids = "${module.network.database_security_group_ids}"
+  database_subnet_ids = "${module.network.database_subnet_ids}"
 }

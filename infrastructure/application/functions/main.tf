@@ -16,7 +16,7 @@ module "function_create_boleto" {
   role = "${var.lambda_execution_role_arn}"
 
   subnet_ids = ["${var.lambda_subnet_ids}"]
-  security_group_ids = ["${var.lambda_security_group_ids}"]
+  security_group_id = "${var.lambda_security_group_id}"
   environment_variables = "${data.null_data_source.environment_variables.inputs}"
 }
 
@@ -28,7 +28,7 @@ module "function_index_boleto" {
   role = "${var.lambda_execution_role_arn}"
 
   subnet_ids = ["${var.lambda_subnet_ids}"]
-  security_group_ids = ["${var.lambda_security_group_ids}"]
+  security_group_id = "${var.lambda_security_group_id}"
   environment_variables = "${data.null_data_source.environment_variables.inputs}"
 }
 
@@ -40,7 +40,7 @@ module "function_show_boleto" {
   role = "${var.lambda_execution_role_arn}"
 
   subnet_ids = ["${var.lambda_subnet_ids}"]
-  security_group_ids = ["${var.lambda_security_group_ids}"]
+  security_group_id = "${var.lambda_security_group_id}"
   environment_variables = "${data.null_data_source.environment_variables.inputs}"
 }
 
@@ -52,7 +52,7 @@ module "function_update_boleto" {
   role = "${var.lambda_execution_role_arn}"
 
   subnet_ids = ["${var.lambda_subnet_ids}"]
-  security_group_ids = ["${var.lambda_security_group_ids}"]
+  security_group_id = "${var.lambda_security_group_id}"
   environment_variables = "${data.null_data_source.environment_variables.inputs}"
 }
 
@@ -64,7 +64,7 @@ module "function_register_boleto" {
   role = "${var.lambda_execution_role_arn}"
 
   subnet_ids = ["${var.lambda_subnet_ids}"]
-  security_group_ids = ["${var.lambda_security_group_ids}"]
+  security_group_id = "${var.lambda_security_group_id}"
   environment_variables = "${data.null_data_source.environment_variables.inputs}"
 }
 
@@ -76,7 +76,7 @@ module "function_process_boletos_to_register" {
   role = "${var.lambda_execution_role_arn}"
 
   subnet_ids = ["${var.lambda_subnet_ids}"]
-  security_group_ids = ["${var.lambda_security_group_ids}"]
+  security_group_id = "${var.lambda_security_group_id}"
   environment_variables = "${data.null_data_source.environment_variables.inputs}"
 }
 
@@ -91,6 +91,6 @@ module "function_migrate_database" {
   memory_size = "512"
 
   subnet_ids = ["${var.lambda_subnet_ids}"]
-  security_group_ids = ["${var.lambda_security_group_ids}"]
+  security_group_id = "${var.lambda_security_group_id}"
   environment_variables = "${data.null_data_source.environment_variables.inputs}"
 }

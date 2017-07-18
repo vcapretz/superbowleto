@@ -27,9 +27,32 @@ resource "aws_api_gateway_deployment" "api_deployment" {
   ]
 }
 
+resource "aws_api_gateway_domain_name" "pagarme_domain" {
+  domain_name = "${var.stage}-superbowleto.${var.dns_base}"
+}
+
+resource "aws_route53_record" "pagarme_domain" {
+  zone_id = "${var.dns_zone_id}"
+
+  name = "${aws_api_gateway_domain_name.pagarme_domain.domain_name}"
+  type = "A"
+
+  alias {
+    name                   = "${aws_api_gateway_domain_name.pagarme_domain.cloudfront_domain_name}"
+    zone_id                = "${aws_api_gateway_domain_name.pagarme_domain.cloudfront_zone_id}"
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_api_gateway_base_path_mapping" "test" {
+  api_id      = "${aws_api_gateway_rest_api.rest_api.id}"
+  stage_name  = "${aws_api_gateway_deployment.api_deployment.stage_name}"
+  domain_name = "${aws_api_gateway_domain_name.pagarme_domain.domain_name}"
+}
+
 resource "aws_api_gateway_usage_plan" "pagarme" {
-  name = "pagarme"
-  description = "Usage plan meant to be used by Pagar.me Services"
+  name = "${var.stage}-pagarme"
+  description = "Usage plan meant to be used by Pagar.me Services on ${var.stage} environment"
 
   api_stages {
     api_id = "${aws_api_gateway_rest_api.rest_api.id}"
@@ -38,8 +61,8 @@ resource "aws_api_gateway_usage_plan" "pagarme" {
 }
 
 resource "aws_api_gateway_api_key" "pagarme" {
-  name = "pagarme"
-  description = "API key meant to be used by Pagar.me Services"
+  name = "${var.stage}-pagarme"
+  description = "API key meant to be used by Pagar.me Services on ${var.stage} environment"
 }
 
 resource "aws_api_gateway_usage_plan_key" "pagarme" {

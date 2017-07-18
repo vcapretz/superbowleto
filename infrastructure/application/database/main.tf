@@ -1,3 +1,13 @@
+resource "aws_db_subnet_group" "database" {
+  name = "superbowleto_database_subnet_group"
+  description = "superbowleto Database Subnet Group"
+  subnet_ids = ["${var.database_subnet_ids}"]
+
+  tags {
+    Name = "superbowleto Database Subnet Group"
+  }
+}
+
 resource "aws_db_instance" "database" {
   engine = "postgres"
   engine_version = "9.6.2"
@@ -16,14 +26,13 @@ resource "aws_db_instance" "database" {
   backup_retention_period = "30"
   backup_window = "04:00-04:30"
   copy_tags_to_snapshot = true
-  final_snapshot_identifier = "${var.stage}-superbowleto"
   maintenance_window = "sun:04:30-sun:05:30"
   skip_final_snapshot = false
 
-  db_subnet_group_name = "${var.database_subnet_group_name}"
+  db_subnet_group_name = "${aws_db_subnet_group.database.name}"
   multi_az = true
   port = "5432"
-  vpc_security_group_ids = ["${var.database_security_group_ids}"]
+  vpc_security_group_ids = ["${var.database_security_group_id}"]
 
   tags {
     Name = "superbowleto Database"

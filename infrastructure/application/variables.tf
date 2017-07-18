@@ -10,11 +10,23 @@ variable "account_id" {
   type = "string"
 }
 
-variable "database_subnet_group_name" {
+variable "dns_base" {
   type = "string"
 }
 
-variable "database_security_group_ids" {
+variable "dns_zone_id" {
+  type = "string"
+}
+
+variable "vpc_id" {
+  type = "string"
+}
+
+variable "database_subnet_ids" {
+  type = "list"
+}
+
+variable "lambda_subnet_ids" {
   type = "list"
 }
 
@@ -24,11 +36,4 @@ variable "lambda_execution_role_arn" {
 
 variable "lambda_execution_role_name" {
   type = "string"
-}
-variable "lambda_subnet_ids" {
-  type = "list"
-}
-
-variable "lambda_security_group_ids" {
-  type = "list"
 }
