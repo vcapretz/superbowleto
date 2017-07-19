@@ -58,6 +58,8 @@ export const buildPayload = boleto =>
 export const translateResponseCode = (response) => {
   const responseCode = response.data.status.codigo.toString()
 
+  console.log('THOR:', response.data)
+
   const defaultValue = {
     message: 'CÓDIGO INEXISTENTE',
     status: 'unknown'
