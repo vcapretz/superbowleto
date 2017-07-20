@@ -12,6 +12,11 @@ const { endpoint } = prop('bradesco', getConfig())
 
 const makeLogger = makeFromLogger('bradesco/index')
 
+const defaultResponseCode = {
+  message: 'CÓDIGO INEXISTENTE',
+  status: 'unknown'
+}
+
 export const buildHeaders = () =>
   Promise.all([
     getCredentials('providers/bradesco/company_id'),
@@ -60,14 +65,14 @@ export const translateResponseCode = (response) => {
 
   const responseCode = response.data.status.codigo.toString()
 
-  logger.info({ status: 'succeeded', metadata: { providerResponse: response.toString() } })
+  logger.info({
+    status: 'succeeded',
+    metadata: {
+      providerResponse: response.toString()
+    }
+  })
 
-  const defaultValue = {
-    message: 'CÓDIGO INEXISTENTE',
-    status: 'unknown'
-  }
-
-  return defaultTo(defaultValue, prop(responseCode, responseCodeMap))
+  return defaultTo(defaultResponseCode, prop(responseCode, responseCodeMap))
 }
 
 export const verifyRegistrationStatus = (boleto) => {
@@ -89,7 +94,13 @@ export const verifyRegistrationStatus = (boleto) => {
     .then(axios.request)
     .then(translateResponseCode)
     .tap((response) => {
-      logger.info({ status: 'succeeded', metadata: { status: response.status, data: response.data } })
+      logger.info({
+        status: 'succeeded',
+        metadata: {
+          status: response.status,
+          data: response.data
+        }
+      })
     })
     .catch((err) => {
       logger.error({ status: 'failed', metadata: { err } })
@@ -98,7 +109,7 @@ export const verifyRegistrationStatus = (boleto) => {
 }
 
 export const register = (boleto) => {
-  const logger = makeLogger({ operation: 'verifyRegistrationStatus' })
+  const logger = makeLogger({ operation: 'register' })
 
   return Promise.all([
     buildHeaders(),
@@ -114,6 +125,7 @@ export const register = (boleto) => {
       logger.info({ status: 'started', metadata: { request } })
     })
     .then(axios.request)
+    .timeout(5000)
     .then(translateResponseCode)
     .then((translatedResponseCode) => {
       if (translatedResponseCode.status === 'check_status') {
@@ -123,7 +135,23 @@ export const register = (boleto) => {
       return translatedResponseCode
     })
     .tap((response) => {
-      logger.info({ status: 'succeeded', metadata: { status: response.status, data: response.data } })
+      logger.info({
+        status: 'succeeded',
+        metadata: {
+          status: response.status,
+          data: response.data
+        }
+      })
+    })
+    .catch(Promise.TimeoutError, () => {
+      logger.error({
+        status: 'failed',
+        metadata: {
+          error: 'Request timed out'
+        }
+      })
+
+      return defaultResponseCode
     })
     .catch((err) => {
       logger.error({ status: 'failed', metadata: { err } })
